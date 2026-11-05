@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; connect-src https://id.twitch.tv http://127.0.0.1:* http://localhost:*; base-uri 'none'; form-action 'none'">
+<meta name="robots" content="noindex">
+<title>Conectar la mascota con Twitch</title>
+<style>
+  :root{
+    --fondo:#1d1a2e; --fondo-2:#2a2445; --fondo-3:#3a3160; --rojo:#e8424f; --oro:#ffcf5c; --pino:#2f8f5b;
+    --crema:#fff4dd; --suave:#bdb3d6; --malo:#ff9aa4;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;min-height:100%;}
+  body{
+    background:var(--fondo);
+    background-image:
+      radial-gradient(circle at 12% 18%, rgba(255,255,255,.55) 0 1.5px, transparent 2.5px),
+      radial-gradient(circle at 78% 9%, rgba(255,255,255,.45) 0 1.5px, transparent 2.5px),
+      radial-gradient(circle at 35% 72%, rgba(255,255,255,.35) 0 1.2px, transparent 2px),
+      radial-gradient(circle at 88% 64%, rgba(255,255,255,.4) 0 1.5px, transparent 2.5px),
+      radial-gradient(circle at 55% 35%, rgba(255,255,255,.3) 0 1px, transparent 2px),
+      radial-gradient(ellipse at 50% 120%, #3a3160 0%, #1d1a2e 60%);
+    background-size:220px 220px, 260px 260px, 180px 180px, 240px 240px, 150px 150px, 100% 100%;
+    color:var(--crema);
+    font:16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    display:flex;justify-content:center;padding:32px 16px 48px;
+  }
+  main{width:100%;max-width:560px;}
+  .luces{display:flex;justify-content:space-between;margin:0 6px -6px;}
+  .luces i{width:12px;height:16px;border-radius:50% 50% 45% 45%;display:block;box-shadow:0 0 12px currentColor;background:currentColor;}
+  .luces i:nth-child(4n+1){color:#e8424f;} .luces i:nth-child(4n+2){color:#ffcf5c;}
+  .luces i:nth-child(4n+3){color:#5fd18c;} .luces i:nth-child(4n){color:#7fb4ff;}
+  .tarjeta{background:rgba(42,36,69,.94);border:2px solid rgba(255,207,92,.35);border-radius:22px;padding:26px 24px 24px;box-shadow:0 18px 50px rgba(0,0,0,.35);}
+  h1{margin:0 0 6px;font-size:24px;line-height:1.25;color:var(--oro);}
+  p{margin:8px 0;}
+  .sub{color:var(--suave);font-size:15px;}
+  .btn{appearance:none;border:0;border-radius:14px;padding:12px 20px;font-weight:700;font-size:16px;line-height:1.2;font-family:inherit;cursor:pointer;color:#fff;background:var(--fondo-3);}
+  .btn:focus-visible{outline:3px solid var(--oro);outline-offset:2px;}
+  .btn.grande{display:block;width:100%;margin:18px 0 6px;padding:15px 20px;font-size:18px;background:var(--rojo);box-shadow:0 0 22px rgba(232,66,79,.45);}
+  .btn.grande:hover{background:#f25562;}
+  .btn.ok{background:var(--pino);}
+  ul.permisos{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px;}
+  ul.permisos li{position:relative;padding:9px 12px 9px 40px;border-radius:12px;background:rgba(255,244,221,.06);font-size:15px;}
+  ul.permisos li::before{content:"👀";position:absolute;left:12px;top:8px;}
+  .nota{font-size:14px;color:var(--suave);}
+  .caja-mala{padding:14px 16px;border-radius:14px;background:rgba(232,66,79,.12);border:1.5px solid rgba(255,154,164,.55);}
+  .caja-mala b{color:var(--malo);}
+  .estado-ok{display:inline-block;margin:4px 0 2px;padding:6px 12px;border-radius:999px;background:rgba(47,143,91,.22);border:1.5px solid rgba(95,209,140,.55);color:#bff0d2;font-weight:700;font-size:15px;}
+  .token-fila{display:flex;gap:8px;margin:14px 0 4px;flex-wrap:wrap;}
+  .token-fila input{flex:1;min-width:180px;padding:12px;border-radius:12px;border:1.5px solid rgba(255,207,92,.45);background:#15122a;color:#ffe9b8;
+    font:600 15px/1.2 ui-monospace, Consolas, "Courier New", monospace;}
+  ol.pasos{margin:14px 0 0;padding-left:22px;}
+  ol.pasos li{margin:6px 0;}
+  ol.pasos b{color:var(--oro);}
+  .aviso-vivo{margin-top:16px;padding:12px 14px;border-radius:14px;background:rgba(255,207,92,.1);border-left:4px solid var(--oro);font-size:15px;}
+  details{margin-top:14px;font-size:15px;}
+  summary{cursor:pointer;color:var(--oro);font-weight:700;}
+  code{font-family:ui-monospace, Consolas, monospace;background:rgba(255,244,221,.08);padding:1px 6px;border-radius:6px;}
+  [hidden]{display:none !important;}
+  @media (max-width:420px){ .tarjeta{padding:20px 16px;} h1{font-size:21px;} }
+</style>
+</head>
+<body>
+<main>
+  <div class="luces" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="tarjeta">
+
+    <!-- Falta configurar (constantes sin rellenar) -->
+    <section id="v-config" hidden>
+      <h1>Falta configurar esta página</h1>
+      <p>Esta página todavía no tiene los datos de su app de Twitch, así que no puede conectar nada.</p>
+      <p class="nota">Si eres quien la publica: rellena <code>CLIENT_ID</code> y <code>REDIRECT</code> al principio del archivo (lo explica <code>PUBLICAR.md</code>).</p>
+    </section>
+
+    <!-- Inicio -->
+    <section id="v-inicio" hidden>
+      <h1>🎄 Conecta tu mascota con Twitch</h1>
+      <p class="sub">Así la mascota se entera de follows, subs, bits, raids, hype trains y de todos tus canjes de puntos (también los que no piden texto).</p>
+      <button class="btn grande" id="b-conectar" type="button">Conectar con Twitch</button>
+      <p class="nota">Twitch te preguntará con qué cuenta entrar. Usa la de tu canal.</p>
+      <p style="margin-top:18px"><b>Qué permisos pide</b> <span class="nota">(todos son solo para mirar)</span></p>
+      <ul class="permisos" id="lista-permisos"></ul>
+      <p class="nota" style="margin-top:12px">No puede escribir en tu chat, cambiar nada de tu canal ni ver tus datos privados. Esta página no guarda nada: el código solo se queda en tu navegador mientras la tengas abierta.</p>
+    </section>
+
+    <!-- Comprobando -->
+    <section id="v-cargando" hidden>
+      <h1>Un momento…</h1>
+      <p class="sub">Comprobando tu conexión con Twitch.</p>
+    </section>
+
+    <!-- Error -->
+    <section id="v-error" hidden>
+      <h1>No se pudo conectar</h1>
+      <div class="caja-mala"><b id="error-titulo"></b><p id="error-texto" style="margin:6px 0 0"></p></div>
+      <button class="btn grande" id="b-reintentar" type="button">Volver a intentarlo</button>
+    </section>
+
+    <!-- Conectado -->
+    <section id="v-ok" hidden>
+      <h1>¡Listo! 🎁</h1>
+      <span class="estado-ok" id="ok-quien"></span>
+      <p class="nota" id="ok-faltan" hidden></p>
+      <p style="margin-top:14px">Este es tu código de conexión:</p>
+      <div class="token-fila">
+        <input id="token" type="password" readonly autocomplete="off" spellcheck="false" aria-label="Código de conexión">
+        <button class="btn" id="b-mostrar" type="button">Mostrar</button>
+        <button class="btn ok" id="b-copiar" type="button">Copiar</button>
+      </div>
+      <ol class="pasos">
+        <li>Pégalo en <b>PANEL › Mascota navideña › Conexión con Twitch</b>.</li>
+        <li>Pulsa <b>«Copiar link»</b> en el PANEL otra vez (el link cambia).</li>
+        <li>Pégalo en la fuente de <b>Navegador</b> de la mascota en OBS (casilla URL).</li>
+      </ol>
+      <div class="aviso-vivo">⚠️ <b>No enseñes esta pantalla en directo.</b> Con este código cualquiera podría ver los mismos avisos que tu mascota. Si se te escapa, desconéctalo (abajo) y saca uno nuevo.</div>
+      <details>
+        <summary>Cómo desconectar</summary>
+        <p>Entra en <b>twitch.tv/settings/connections</b>, busca esta app en la lista y pulsa <b>Desconectar</b>. El código deja de funcionar al momento.</p>
+        <p class="nota">El código caduca solo en unas semanas. Cuando pase, la mascota avisa con «Twitch desconectado»: vuelve a esta página y saca uno nuevo.</p>
+      </details>
+    </section>
+
+  </div>
+</main>
+<script>
+(function(){
+  'use strict';
+  /* ── Rellenar al publicar (ver PUBLICAR.md) ───────────────────── */
+  var CLIENT_ID = 'PEGA_AQUI_EL_CLIENT_ID';
+  var REDIRECT = 'PEGA_AQUI_URL_EXACTA/';
+  /* Los mismos permisos que HW.SCOPES del pack (todos de solo lectura). Esta página es independiente del pack. */
+  var SCOPES = ['channel:read:redemptions', 'moderator:read:followers', 'bits:read', 'channel:read:subscriptions', 'channel:read:hype_train'];
+  var EXPLICA = {
+    'channel:read:redemptions': 'Ver cuándo alguien canjea tus puntos del canal',
+    'moderator:read:followers': 'Ver quién empieza a seguirte',
+    'bits:read': 'Ver los bits que te mandan',
+    'channel:read:subscriptions': 'Ver quién se suscribe o regala subs',
+    'channel:read:hype_train': 'Ver cuándo empieza y termina un hype train'
+  };
+  var CLAVE_STATE = 'nv-auth-state';
+
+  /* Solo para probar en esta computadora (localhost): ?cid=… y ?validate=http://127.0.0.1:… */
+  var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  var Q = {};
+  (location.search || '').replace(/^\?/, '').split('&').forEach(function(par){
+    if (!par) return;
+    var i = par.indexOf('='), k = i < 0 ? par : par.slice(0, i), v = i < 0 ? '' : par.slice(i + 1);
+    try { Q[decodeURIComponent(k)] = decodeURIComponent(v.replace(/\+/g, ' ')); } catch(e){}
+  });
+  var VALIDATE = 'https://id.twitch.tv';
+  if (local){
+    if (Q.cid && /^[a-z0-9]{1,64}$/i.test(Q.cid)) CLIENT_ID = Q.cid;
+    if (REDIRECT.indexOf('PEGA_AQUI') >= 0) REDIRECT = location.origin + location.pathname;
+    if (/^http:\/\/(127\.0\.0\.1|localhost)(:\d{1,5})?(\/[a-z0-9\/_-]*)?$/i.test(Q.validate || '')) VALIDATE = Q.validate.replace(/\/+$/, '');
+  }
+  var configurado = /^[a-z0-9]{1,64}$/i.test(CLIENT_ID) && CLIENT_ID.indexOf('PEGA_AQUI') < 0 &&
+                    /^https?:\/\//i.test(REDIRECT) && REDIRECT.indexOf('PEGA_AQUI') < 0;
+
+  function ver(id){
+    ['v-config', 'v-inicio', 'v-cargando', 'v-error', 'v-ok'].forEach(function(v){ document.getElementById(v).hidden = v !== id; });
+  }
+  function $(id){ return document.getElementById(id); }
+  function error(titulo, texto){ $('error-titulo').textContent = titulo; $('error-texto').textContent = texto; ver('v-error'); }
+  function limpiarURL(){ try { history.replaceState(null, '', location.pathname + (local && Q.cid ? '?cid=' + encodeURIComponent(Q.cid) + (Q.validate ? '&validate=' + encodeURIComponent(Q.validate) : '') : '')); } catch(e){} }
+  function azar(){
+    var a = new Uint8Array(16);
+    (window.crypto || window.msCrypto).getRandomValues(a);
+    return Array.prototype.map.call(a, function(b){ return ('0' + b.toString(16)).slice(-2); }).join('');
+  }
+  function guardarState(v){ try { if (v) sessionStorage.setItem(CLAVE_STATE, v); else sessionStorage.removeItem(CLAVE_STATE); } catch(e){} }
+  function leerState(){ try { return sessionStorage.getItem(CLAVE_STATE) || ''; } catch(e){ return ''; } }
+
+  function inicio(){
+    var ul = $('lista-permisos'); ul.innerHTML = '';
+    SCOPES.forEach(function(s){ var li = document.createElement('li'); li.textContent = EXPLICA[s] || s; ul.appendChild(li); });
+    ver('v-inicio');
+  }
+  $('b-conectar').onclick = function(){
+    var st = azar(); guardarState(st);
+    location.href = 'https://id.twitch.tv/oauth2/authorize' +
+      '?response_type=token' +
+      '&client_id=' + encodeURIComponent(CLIENT_ID) +
+      '&redirect_uri=' + encodeURIComponent(REDIRECT) +
+      '&scope=' + encodeURIComponent(SCOPES.join(' ')) +
+      '&state=' + encodeURIComponent(st) +
+      '&force_verify=true';
+  };
+  $('b-reintentar').onclick = function(){ limpiarURL(); inicio(); };
+
+  function dias(seg){ var n = Math.round(seg / 86400); return n >= 1 ? '~' + n + (n === 1 ? ' día' : ' días') : 'menos de un día'; }
+  function mostrarToken(token, r){
+    $('ok-quien').textContent = 'Conectado como ' + r.login + (r.expires_in ? ' · caduca en ' + dias(r.expires_in) : '');
+    var faltan = SCOPES.filter(function(s){ return (r.scopes || []).indexOf(s) < 0; });
+    $('ok-faltan').hidden = !faltan.length;
+    $('ok-faltan').textContent = faltan.length ? 'Ojo: no diste todos los permisos. Sin ellos no llegará: ' + faltan.map(function(s){ return (EXPLICA[s] || s).toLowerCase(); }).join(' · ') + '.' : '';
+    var inp = $('token'); inp.value = token; inp.type = 'password';
+    $('b-mostrar').textContent = 'Mostrar';
+    $('b-mostrar').onclick = function(){ var o = inp.type === 'password'; inp.type = o ? 'text' : 'password'; this.textContent = o ? 'Ocultar' : 'Mostrar'; };
+    $('b-copiar').onclick = function(){
+      var b = this;
+      function hecho(){ b.textContent = '¡Copiado!'; setTimeout(function(){ b.textContent = 'Copiar'; }, 1800); }
+      function viejo(){
+        var t = inp.type; inp.type = 'text'; inp.select();
+        try { document.execCommand('copy'); hecho(); } catch(e){ b.textContent = 'Selecciónalo y Ctrl+C'; }
+        inp.type = t; window.getSelection && window.getSelection().removeAllRanges();
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(token).then(hecho, viejo); else viejo();
+    };
+    ver('v-ok');
+  }
+
+  function vuelta(hash){
+    var h = {};
+    hash.replace(/^#/, '').split('&').forEach(function(par){
+      var i = par.indexOf('='); if (i < 1) return;
+      try { h[decodeURIComponent(par.slice(0, i))] = decodeURIComponent(par.slice(i + 1).replace(/\+/g, ' ')); } catch(e){}
+    });
+    limpiarURL();                                  /* el código no se queda en la barra de direcciones ni en el historial */
+    var esperado = leerState(); guardarState('');
+    var token = String(h.access_token || '');
+    if (!esperado || h.state !== esperado){
+      return error('La respuesta no coincide con esta pestaña.', 'Pasa si abriste la conexión en otra pestaña o ventana, o si la página se recargó. Vuelve a pulsar «Conectar con Twitch» aquí mismo.');
+    }
+    if (!/^[a-z0-9]{1,64}$/i.test(token)) return error('Twitch no devolvió un código válido.', 'Vuelve a intentarlo.');
+    ver('v-cargando');
+    fetch(VALIDATE + '/oauth2/validate', { headers:{ 'Authorization':'OAuth ' + token }, cache:'no-store' })
+      .then(function(r){ return r.json().then(function(j){ return { status:r.status, j:j || {} }; }, function(){ return { status:r.status, j:{} }; }); })
+      .then(function(r){
+        if (r.status !== 200 || !r.j.user_id) return error('Twitch no acepta este código.', 'Puede que haya caducado o que lo hayas cancelado. Vuelve a conectar.');
+        if (String(r.j.client_id || '') !== CLIENT_ID) return error('Este código no es de esta página.', 'Por seguridad no se muestra. Vuelve a conectar desde aquí.');
+        mostrarToken(token, { login:String(r.j.login || ''), expires_in:parseInt(r.j.expires_in, 10) || 0, scopes:Array.isArray(r.j.scopes) ? r.j.scopes : [] });
+      }, function(){
+        error('No pude hablar con Twitch.', '¿Hay internet? Vuelve a intentarlo en un momento.');
+      });
+  }
+
+  /* ── Arranque ── */
+  if (!configurado){ limpiarURL(); ver('v-config'); return; }
+  if (Q.error){
+    limpiarURL(); guardarState('');
+    if (Q.error === 'access_denied') return error('Cancelaste la conexión.', 'No pasa nada: no se conectó nada. Si quieres, inténtalo otra vez.');
+    return error('Twitch respondió con un error.', 'Vuelve a intentarlo. Si se repite, avisa a quien te pasó el pack.');
+  }
+  if (/access_token=/.test(location.hash || '')) return vuelta(location.hash);
+  inicio();
+})();
+</script>
+</body>
+</html>
