@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="robots" content="noindex">
+<title>Pack Navidad · Descargar</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='11' width='24' height='18' rx='4' fill='%23e8424f' stroke='%231d1a2e' stroke-width='2'/%3E%3Cpath d='M16 11v18' stroke='%23ffcf5c' stroke-width='4'/%3E%3Cpath d='M16 11c-7-1-8-8-3-8 2 0 3 4 3 8 0-4 1-8 3-8 5 0 4 7-3 8z' fill='%23ffcf5c' stroke='%231d1a2e' stroke-width='2'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --fondo:#191520; --sup:#25202f; --sup-2:#302a3b; --oro:#ffcf5c; --rojo:#e8424f; --pino:#2f9059;
+    --texto:#fff4dd; --texto-2:#d6cedb; --texto-3:#ada4b6;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;min-height:100%;}
+  body{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 16px 56px;
+    color:var(--texto);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(255,255,255,.5) 0 1.5px, transparent 2.5px),
+      radial-gradient(circle at 78% 9%, rgba(255,255,255,.4) 0 1.5px, transparent 2.5px),
+      radial-gradient(circle at 35% 72%, rgba(255,255,255,.3) 0 1.2px, transparent 2px),
+      radial-gradient(circle at 88% 64%, rgba(255,255,255,.35) 0 1.5px, transparent 2.5px),
+      radial-gradient(60% 420px at 82% -60px, rgba(232,66,79,.18), transparent 72%),
+      radial-gradient(50% 380px at 12% -80px, rgba(255,207,92,.14), transparent 70%),
+      var(--fondo);
+    background-size:220px 220px,260px 260px,180px 180px,240px 240px,100% 100%,100% 100%,100% 100%;
+  }
+  main{width:100%;max-width:520px;}
+  .luces{display:flex;justify-content:space-between;margin:0 18px -7px;}
+  .luces i{display:block;width:12px;height:16px;border-radius:50% 50% 45% 45%;background:currentColor;box-shadow:0 0 12px currentColor;}
+  .luces i:nth-child(4n+1){color:#e8424f;} .luces i:nth-child(4n+2){color:#ffcf5c;}
+  .luces i:nth-child(4n+3){color:#5fd18c;} .luces i:nth-child(4n){color:#7fb4ff;}
+  .tarjeta{position:relative;padding:30px 28px 28px;border-radius:22px;background:var(--sup-2);
+    box-shadow:inset 0 0 0 2px var(--oro),0 22px 50px -22px rgba(0,0,0,.8);}
+  .regalo{display:block;width:56px;height:56px;margin:0 0 14px;}
+  .marca{margin:0;font-weight:700;font-size:14px;letter-spacing:.02em;color:var(--oro);}
+  h1{margin:4px 0 0;font-size:27px;line-height:1.2;font-weight:800;color:var(--texto);text-wrap:balance;}
+  .pronto{display:inline-block;margin:20px 0 0;padding:5px 13px;border-radius:999px;background:rgba(255,207,92,.14);color:var(--oro);font-weight:800;font-size:14px;}
+  p.tx{margin:10px 0 0;color:var(--texto-2);font-size:16px;}
+  p.nota{margin:18px 0 0;padding-top:16px;border-top:1px solid rgba(255,244,221,.12);color:var(--texto-3);font-size:14px;}
+  @media (max-width:420px){ .tarjeta{padding:24px 18px 22px;} h1{font-size:23px;} }
+</style>
+</head>
+<body>
+<main>
+  <div class="luces" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="tarjeta">
+    <svg class="regalo" viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="11" width="24" height="18" rx="4" fill="#e8424f" stroke="#1d1a2e" stroke-width="2"/><path d="M16 11v18" stroke="#ffcf5c" stroke-width="4"/><path d="M16 11c-7-1-8-8-3-8 2 0 3 4 3 8 0-4 1-8 3-8 5 0 4 7-3 8z" fill="#ffcf5c" stroke="#1d1a2e" stroke-width="2"/></svg>
+    <p class="marca">Pack Navidad</p>
+    <h1>Aquí siempre está la versión más nueva</h1>
+    <span class="pronto">Pronto</span>
+    <p class="tx">Todavía no hay una versión para descargar. Cuando salga una nueva, el PANEL del pack te avisa y te trae aquí.</p>
+    <p class="nota">Mientras tanto, tu pack sigue funcionando igual. No hace falta hacer nada.</p>
+  </div>
+</main>
+</body>
+</html>
