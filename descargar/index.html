@@ -28,7 +28,7 @@
       var(--fondo);
     background-size:220px 220px,260px 260px,180px 180px,240px 240px,100% 100%,100% 100%,100% 100%;
   }
-  main{width:100%;max-width:520px;}
+  main{width:100%;max-width:560px;}
   .luces{display:flex;justify-content:space-between;margin:0 18px -7px;}
   .luces i{display:block;width:12px;height:16px;border-radius:50% 50% 45% 45%;background:currentColor;box-shadow:0 0 12px currentColor;}
   .luces i:nth-child(4n+1){color:#e8424f;} .luces i:nth-child(4n+2){color:#ffcf5c;}
@@ -38,9 +38,15 @@
   .regalo{display:block;width:56px;height:56px;margin:0 0 14px;}
   .marca{margin:0;font-weight:700;font-size:14px;letter-spacing:.02em;color:var(--oro);}
   h1{margin:4px 0 0;font-size:27px;line-height:1.2;font-weight:800;color:var(--texto);text-wrap:balance;}
-  .pronto{display:inline-block;margin:20px 0 0;padding:5px 13px;border-radius:999px;background:rgba(255,207,92,.14);color:var(--oro);font-weight:800;font-size:14px;}
-  p.tx{margin:10px 0 0;color:var(--texto-2);font-size:16px;}
-  p.nota{margin:18px 0 0;padding-top:16px;border-top:1px solid rgba(255,244,221,.12);color:var(--texto-3);font-size:14px;}
+  .version{display:inline-block;margin:14px 0 0;padding:5px 13px;border-radius:999px;background:rgba(255,207,92,.14);color:var(--oro);font-weight:800;font-size:14px;}
+  .bajar{display:block;margin:18px 0 0;padding:14px 18px;border-radius:14px;background:var(--rojo);color:#fff;text-decoration:none;font-weight:800;font-size:17px;box-shadow:0 4px 0 #9e2632;}
+  .bajar.otro{background:var(--sup);color:var(--texto);box-shadow:inset 0 0 0 2px rgba(255,244,221,.18);font-size:15px;}
+  .bajar small{display:block;font-weight:500;font-size:13.5px;opacity:.85;}
+  .bajar:focus-visible{outline:3px solid var(--oro);outline-offset:3px;}
+  details{margin:22px 0 0;padding-top:16px;border-top:1px solid rgba(255,244,221,.12);color:var(--texto-2);font-size:14.5px;}
+  summary{cursor:pointer;font-weight:700;color:var(--texto);}
+  code{display:block;margin:6px 0 12px;padding:8px 10px;border-radius:10px;background:var(--fondo);color:var(--oro);font:13px/1.45 ui-monospace,Consolas,monospace;word-break:break-all;user-select:all;}
+  p.nota{margin:10px 0 0;color:var(--texto-3);font-size:14px;}
   @media (max-width:420px){ .tarjeta{padding:24px 18px 22px;} h1{font-size:23px;} }
 </style>
 </head>
@@ -51,9 +57,21 @@
     <svg class="regalo" viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="11" width="24" height="18" rx="4" fill="#e8424f" stroke="#1d1a2e" stroke-width="2"/><path d="M16 11v18" stroke="#ffcf5c" stroke-width="4"/><path d="M16 11c-7-1-8-8-3-8 2 0 3 4 3 8 0-4 1-8 3-8 5 0 4 7-3 8z" fill="#ffcf5c" stroke="#1d1a2e" stroke-width="2"/></svg>
     <p class="marca">Pack Navidad</p>
     <h1>Aquí siempre está la versión más nueva</h1>
-    <span class="pronto">Pronto</span>
-    <p class="tx">Todavía no hay una versión para descargar. Cuando salga una nueva, el PANEL del pack te avisa y te trae aquí.</p>
-    <p class="nota">Mientras tanto, tu pack sigue funcionando igual. No hace falta hacer nada.</p>
+    <span class="version">Versión 1.0.0</span>
+    <a class="bajar" href="https://github.com/overlay-navideno/overlay-navideno.github.io/releases/download/v1.0.0/Instalar.Pack.Navidad.exe">Bajar el instalador para Windows<small>Instalar.Pack.Navidad.exe · 938 KB · pone el panel dentro de OBS</small></a>
+    <a class="bajar otro" href="https://github.com/overlay-navideno/overlay-navideno.github.io/releases/download/v1.0.0/navidad-pack.zip">Bajar el pack en zip<small>navidad-pack.zip · 646 KB · para Mac, Linux o Streamlabs</small></a>
+    <details>
+      <summary>¿Cómo sé que es el de verdad?</summary>
+      <p>Cada archivo tiene una huella (SHA-256). Si alguien lo cambiara, la huella sería otra.</p>
+      <p>Instalador:</p>
+      <code>72a79bae07187db206d7e8e23cd6943b5adf5570aab15adab61cce614e3837fb</code>
+      <p>Zip:</p>
+      <code>f7b024b49504f8de9bab018ffec2c94409598b5e897816717f9cba82111b4f42</code>
+      <p>En Windows, abre PowerShell y escribe (con tu carpeta de descargas):</p>
+      <code>Get-FileHash "$HOME\Downloads\Instalar.Pack.Navidad.exe"</code>
+      <p>El número que sale tiene que ser igual al de arriba (mayúsculas o minúsculas da igual). Si no lo es, no lo abras.</p>
+    </details>
+    <p class="nota">Windows puede decir «Windows protegió tu PC»: pulsa «Más información» y luego «Ejecutar de todas formas». Hazlo solo con el archivo bajado de esta página.</p>
   </div>
 </main>
 </body>

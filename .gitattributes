@@ -1,0 +1,4 @@
+# Firmas y paquetes del plugin: tal cual, sin cambiar finales de línea
+*.firmado binary
+*.zip binary
+*.exe binary
